@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Universe VIT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/vit_logo.png') }}" class="logo">
+        <h1>Universe VIT</h1>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h2>Welcome to Universe VIT</h2>
+        <p>
+            Your centralized hub for campus events, workshops, clubs & academic opportunities.
+        </p>
+    </div>
+</section>
+
+<!-- TRENDING EVENTS -->
+<section class="featured">
+    <div class="featured-header">
+    <h2>🔥 Trending Now</h2>
+    <button class="filter-btn" onclick="toggleFilter()">Filter</button>
+</div>
+
+   <div class="cards">
+    {% for event in events.featured %}
+    <div class="card event-card"
+         data-category="{{ event.category }}"
+         data-date="{{ event.date }}"
+         data-time="{{ event.time }}">
+
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
+
+    </div>
+    {% endfor %}
+</div>
+
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories">
+    <h2>Explore by Category</h2>
+    <div class="cards">
+        {% for category, image in events.categories.items() %}
+        <div class="card category-card">
+            <img src="{{ url_for('static', filename='images/' + image) }}">
+            <h3>{{ category }}</h3>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- FILTER SIDEBAR -->
+<div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+
+<aside class="filter-panel" id="filterPanel">
+    <h3>Filter Events</h3>
+
+    <label>Category</label>
+    <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="Cultural">Cultural</option>
+        <option value="Technical">Technical</option>
+    </select>
+
+    <label>Date</label>
+    <input type="date" id="dateFilter">
+
+    <label>Time</label>
+    <select id="timeFilter">
+        <option value="">Any</option>
+        <option value="Morning">Morning</option>
+        <option value="Afternoon">Afternoon</option>
+        <option value="Evening">Evening</option>
+    </select>
+
+    <button onclick="applyFilters()">Apply Filters</button>
+</aside>
+
+<script src="{{ url_for('static', filename='js/filter.js') }}"></script>
+
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+    <div class="contact-container">
+        <div class="contact-item">📧 campuspulse@vit.ac.in</div>
+        <div class="contact-item">📍 VIT University, Vellore, Tamil Nadu</div>
+        <div class="contact-item">☎ +91 98765 43210</div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <span>Last Updated: February 2026</span>
+    <span>© Vellore Institute of Technology | Privacy Policy</span>
+</footer>
+
+</body>
+</html>
