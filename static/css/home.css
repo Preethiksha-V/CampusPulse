@@ -16,14 +16,38 @@ body {
    NAVBAR
 ========================= */
 .navbar {
-    background: #002B5C;
-    padding: 14px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* pushes left and right apart */
+    background: #0b3b6f;
+    padding: 12px 25px;
+    color: white;
 }
 
 .nav-left {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
+
+.nav-right {
+    margin-left: auto;
+}
+
+.nav-btn {
+    background: #00c6ff;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-btn:hover {
+    background: #009ed8;
+}
+
 
 .logo {
     height: 40px;
@@ -511,4 +535,39 @@ body {
 .recommended h2 {
     margin-bottom: 20px;
     color: #0d47a1;
+}
+.nav-right {
+    margin-left: auto;
+}
+
+.nav-btn {
+    background: #00c6ff;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav-btn:hover {
+    background: #009ed8;
+}
+.register-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.register-btn:hover {
+    background: #43a047;
+}
+
+.register-msg {
+    margin-top: 10px;
+    font-size: 14px;
 }

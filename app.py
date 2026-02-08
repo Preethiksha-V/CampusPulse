@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
 
-# Function to get all events
+# -------------------------------
+# Get all events
+# -------------------------------
 def get_events():
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
@@ -25,8 +28,11 @@ def get_events():
             "poster": row[7]
         })
     return events
-from datetime import datetime, timedelta
 
+
+# -------------------------------
+# Get upcoming events (next 3 days)
+# -------------------------------
 def get_upcoming_events():
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
@@ -57,13 +63,17 @@ def get_upcoming_events():
     return upcoming
 
 
+# -------------------------------
 # Login page
+# -------------------------------
 @app.route('/')
 def login():
     return render_template("login.html")
 
 
+# -------------------------------
 # Home page
+# -------------------------------
 @app.route('/home')
 def home():
     events = get_events()
@@ -77,23 +87,20 @@ def home():
         "Sports": "sports.jpg"
     }
 
-    # Default recommendation: technical events
-    recommended = [e for e in events if e["category"] == "Technical"][:3]
-
     return render_template(
         "home.html",
         events=events,
         categories=categories,
-        upcoming=upcoming,
-        recommended=recommended
+        upcoming=upcoming
     )
 
 
-
+# -------------------------------
+# Category page
+# -------------------------------
 @app.route('/category/<category_name>')
 def category_page(category_name):
 
-    # Mapping UI categories to DB categories
     category_map = {
         "Culturals": "Cultural",
         "Technical Events": "Technical",
@@ -106,7 +113,6 @@ def category_page(category_name):
 
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
-
     cursor.execute("SELECT * FROM events WHERE category = ?", (db_category,))
     rows = cursor.fetchall()
     conn.close()
@@ -126,32 +132,51 @@ def category_page(category_name):
 
     return render_template("category.html", events=events, category=category_name)
 
-# Admin panel page
-@app.route('/admin')
-def admin():
+
+# -------------------------------
+# Search route (NEW)
+# -------------------------------
+@app.route('/search')
+def search():
+    query = request.args.get('q', '').lower()
+
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM events")
     rows = cursor.fetchall()
     conn.close()
 
-    events = []
-    for row in rows:
-        events.append({
-            "id": row[0],
-            "title": row[1],
-            "category": row[2],
-            "date": row[3],
-            "time": row[4],
-            "venue": row[5],
-            "description": row[6],
-            "poster": row[7]
-        })
+    results = []
 
+    for row in rows:
+        title = row[1].lower()
+        category = row[2].lower()
+
+        if query in title or query in category:
+            results.append({
+                "id": row[0],
+                "title": row[1],
+                "category": row[2],
+                "date": row[3],
+                "time": row[4],
+                "venue": row[5],
+                "description": row[6],
+                "poster": row[7]
+            })
+
+    return render_template("search_results.html", events=results, query=query)
+
+
+# -------------------------------
+# Admin panel
+# -------------------------------
+@app.route('/admin')
+def admin():
+    events = get_events()
     return render_template("admin.html", events=events)
 
 
-# Handle event submission
+# Add event
 @app.route('/add_event', methods=['POST'])
 def add_event():
     title = request.form['title']
@@ -160,7 +185,7 @@ def add_event():
     time = request.form['time']
     venue = request.form['venue']
     description = request.form['description']
-    poster = request.form['poster']  # image filename
+    poster = request.form['poster']
 
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
@@ -174,6 +199,9 @@ def add_event():
     conn.close()
 
     return redirect(url_for('home'))
+
+
+# Delete event
 @app.route('/delete_event/<int:event_id>')
 def delete_event(event_id):
     conn = sqlite3.connect("campuspulse.db")
@@ -183,6 +211,9 @@ def delete_event(event_id):
     conn.close()
 
     return redirect(url_for('admin'))
+
+
+# Edit event page
 @app.route('/edit_event/<int:event_id>')
 def edit_event(event_id):
     conn = sqlite3.connect("campuspulse.db")
@@ -203,8 +234,12 @@ def edit_event(event_id):
     }
 
     return render_template("edit_event.html", event=event)
+@app.route('/my-events')
+def my_events():
+    return render_template("my_events.html")
 
 
+# Update event
 @app.route('/update_event/<int:event_id>', methods=['POST'])
 def update_event(event_id):
     title = request.form['title']
@@ -229,5 +264,9 @@ def update_event(event_id):
 
     return redirect(url_for('admin'))
 
+
+# -------------------------------
+# Run app
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

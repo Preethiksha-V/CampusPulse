@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ category }} Events</title>
+    <title>Search Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 <body>
 
 <header class="navbar">
     <div class="nav-left">
-        <h1>{{ category }}</h1>
+        <h1>Search Results</h1>
     </div>
 </header>
 
 <section class="featured">
-    <h2>{{ category }} Events</h2>
+    <h2>Results for "{{ query }}"</h2>
 
     <div class="cards">
         {% for event in events %}
@@ -29,18 +29,18 @@
              )">
 
             <h3>{{ event.title }}</h3>
-            <p>{{ event.date }} | {{ event.time }}</p>
+            <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
             <p>{{ event.venue }}</p>
         </div>
         {% endfor %}
     </div>
 
     {% if events|length == 0 %}
-        <p style="text-align:center;">No events available.</p>
+        <p style="text-align:center;">No matching events found.</p>
     {% endif %}
 </section>
 
-<!-- EVENT DETAIL MODAL -->
+<!-- Reuse the same modal -->
 <div id="eventModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">×</span>
@@ -52,9 +52,6 @@
         <p><strong>Time:</strong> <span id="modalTime"></span></p>
         <p><strong>Venue:</strong> <span id="modalVenue"></span></p>
         <p id="modalDescription"></p>
-        <button class="register-btn" onclick="registerEvent()">Register</button>
-<p id="registerMsg" class="register-msg"></p>
-
     </div>
 </div>
 
@@ -75,45 +72,6 @@ function closeModal() {
     document.getElementById("eventModal").style.display = "none";
 }
 </script>
-<script>
-let currentEvent = {};
-
-function showEventDetails(title, category, date, time, venue, description, poster) {
-    document.getElementById("modalTitle").textContent = title;
-    document.getElementById("modalCategory").textContent = category;
-    document.getElementById("modalDate").textContent = date;
-    document.getElementById("modalTime").textContent = time;
-    document.getElementById("modalVenue").textContent = venue;
-    document.getElementById("modalDescription").textContent = description;
-    document.getElementById("modalPoster").src = poster;
-
-    currentEvent = {
-        title, category, date, time, venue, description, poster
-    };
-
-    document.getElementById("registerMsg").textContent = "";
-    document.getElementById("eventModal").style.display = "flex";
-}
-
-function closeModal() {
-    document.getElementById("eventModal").style.display = "none";
-}
-
-function registerEvent() {
-    let registered = JSON.parse(localStorage.getItem("registeredEvents")) || [];
-
-    let exists = registered.find(e => e.title === currentEvent.title);
-
-    if (!exists) {
-        registered.push(currentEvent);
-        localStorage.setItem("registeredEvents", JSON.stringify(registered));
-        document.getElementById("registerMsg").textContent = "✅ Successfully registered!";
-    } else {
-        document.getElementById("registerMsg").textContent = "⚠ Already registered.";
-    }
-}
-</script>
-
 
 </body>
 </html>

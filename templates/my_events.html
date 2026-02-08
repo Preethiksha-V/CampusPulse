@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Registered Events</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <h1>My Registered Events</h1>
+    </div>
+</header>
+
+<section class="featured">
+    <div class="cards" id="myEventsContainer"></div>
+    <p id="emptyMsg" style="text-align:center; display:none;">
+        No events registered yet.
+    </p>
+</section>
+
+<script>
+let container = document.getElementById("myEventsContainer");
+let emptyMsg = document.getElementById("emptyMsg");
+
+let registered = JSON.parse(localStorage.getItem("registeredEvents")) || [];
+
+if (registered.length === 0) {
+    emptyMsg.style.display = "block";
+} else {
+    registered.forEach(event => {
+        let card = document.createElement("div");
+        card.className = "card event-card";
+
+        card.innerHTML = `
+            <h3>${event.title}</h3>
+            <p>${event.category} | ${event.date} | ${event.time}</p>
+            <p>${event.venue}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
+</script>
+
+</body>
+</html>
