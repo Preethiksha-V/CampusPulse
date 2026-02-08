@@ -278,3 +278,237 @@ body {
 .search-container button:hover {
     background: #009ed8;
 }
+.category-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.category-card {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.category-card:hover {
+    transform: scale(1.03);
+}
+/* Event detail page */
+.event-detail {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.event-container {
+    display: flex;
+    gap: 40px;
+    max-width: 900px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.event-poster {
+    width: 300px;
+    border-radius: 10px;
+}
+
+.event-info {
+    flex: 1;
+}
+
+.event-link {
+    text-decoration: none;
+    color: inherit;
+}
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 500px;
+    text-align: center;
+    position: relative;
+}
+
+.modal-poster {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 400px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.admin-form button {
+    padding: 12px;
+    background: #00c6ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.admin-form button:hover {
+    background: #009ed8;
+}
+/* Admin layout */
+.admin-section {
+    padding: 40px;
+    background: #f4f6f9;
+    min-height: 90vh;
+}
+
+.admin-wrapper {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.admin-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.admin-card h2 {
+    margin-bottom: 15px;
+}
+
+/* Form */
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+.primary-btn {
+    padding: 12px;
+    background: #00c6ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: #009ed8;
+}
+
+/* Event list */
+.admin-event {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
+}
+
+.admin-info {
+    flex: 1;
+}
+
+.admin-info strong {
+    display: block;
+    font-size: 15px;
+}
+
+.admin-info p {
+    margin: 3px 0 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.admin-actions a {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+
+
+.edit-btn {
+    background: #ffd966;
+    color: black;
+}
+
+.delete-btn {
+    background: #ff6b6b;
+    color: white;
+}
+/* Upcoming events */
+.upcoming {
+    background: #fff8e1;
+    padding: 30px;
+}
+
+.upcoming h2 {
+    margin-bottom: 20px;
+    color: #e65100;
+}
+
+.upcoming-card {
+    border: 2px solid #ffb74d;
+    background: #fff3cd;
+}
+/* Recommended section */
+.recommended {
+    padding: 30px;
+    background: #e3f2fd;
+}
+
+.recommended h2 {
+    margin-bottom: 20px;
+    color: #0d47a1;
+}

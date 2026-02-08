@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <h1>Admin Panel</h1>
+    </div>
+</header>
+
+<section class="admin-section">
+    <div class="admin-wrapper">
+
+        <!-- ADD EVENT FORM -->
+        <div class="admin-card">
+            <h2>Add New Event</h2>
+            <form action="/add_event" method="POST" class="admin-form">
+
+                <input type="text" name="title" placeholder="Event Title" required>
+
+                <select name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Value-Added Course">Value-Added Course</option>
+                </select>
+
+                <input type="date" name="date" required>
+                <input type="text" name="time" placeholder="Time" required>
+                <input type="text" name="venue" placeholder="Venue" required>
+                <textarea name="description" placeholder="Description" required></textarea>
+                <input type="text" name="poster" placeholder="Poster filename" required>
+
+                <button type="submit" class="primary-btn">Add Event</button>
+            </form>
+        </div>
+
+        <!-- EVENT LIST -->
+        <div class="admin-card">
+            <h2>Existing Events</h2>
+
+            {% for event in events %}
+            <div class="admin-event">
+    <div class="admin-info">
+        <strong>{{ event.title }}</strong>
+        <p>{{ event.category }} | {{ event.date }}</p>
+    </div>
+
+    <div class="admin-actions">
+        <a href="/edit_event/{{ event.id }}" class="edit-btn">Edit</a>
+        <a href="/delete_event/{{ event.id }}" class="delete-btn">Delete</a>
+    </div>
+</div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>

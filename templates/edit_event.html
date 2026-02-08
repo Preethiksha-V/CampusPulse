@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <h1>Edit Event</h1>
+    </div>
+</header>
+
+<section class="event-detail">
+    <div class="event-container">
+
+        <form action="/update_event/{{ event.id }}" method="POST" class="admin-form">
+
+            <input type="text" name="title" value="{{ event.title }}" required>
+
+            <select name="category" required>
+                <option value="Cultural" {% if event.category=='Cultural' %}selected{% endif %}>Cultural</option>
+                <option value="Technical" {% if event.category=='Technical' %}selected{% endif %}>Technical</option>
+                <option value="Sports" {% if event.category=='Sports' %}selected{% endif %}>Sports</option>
+                <option value="Workshop" {% if event.category=='Workshop' %}selected{% endif %}>Workshop</option>
+                <option value="Value-Added Course" {% if event.category=='Value-Added Course' %}selected{% endif %}>Value-Added Course</option>
+            </select>
+
+            <input type="date" name="date" value="{{ event.date }}" required>
+            <input type="text" name="time" value="{{ event.time }}" required>
+            <input type="text" name="venue" value="{{ event.venue }}" required>
+            <textarea name="description" required>{{ event.description }}</textarea>
+            <input type="text" name="poster" value="{{ event.poster }}" required>
+
+            <button type="submit">Update Event</button>
+
+        </form>
+
+    </div>
+</section>
+
+</body>
+</html>

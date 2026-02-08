@@ -22,9 +22,9 @@
         <p>
             Your centralized hub for campus events, workshops, clubs & academic opportunities.
         </p>
-        
     </div>
 </section>
+
 <!-- SEARCH SECTION -->
 <section class="search-section">
     <div class="search-container">
@@ -32,30 +32,48 @@
         <button onclick="searchEvents()">Search</button>
     </div>
 </section>
+<!-- UPCOMING EVENTS -->
+{% if upcoming|length > 0 %}
+<section class="upcoming">
+    <h2>🔔 Upcoming in Next 3 Days</h2>
+
+    <div class="cards">
+        {% for event in upcoming %}
+        <div class="card upcoming-card">
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.category }}</p>
+            <p>{{ event.date }} | {{ event.time }}</p>
+            <p>{{ event.venue }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+<!-- RECOMMENDED EVENTS -->
+<section class="recommended" id="recommendedSection" style="display:none;">
+    <h2>⭐ Recommended for You</h2>
+    <div class="cards" id="recommendedCards"></div>
+</section>
 
 <!-- TRENDING EVENTS -->
 <section class="featured">
     <div class="featured-header">
-    <h2>🔥 Trending Now</h2>
-    <button class="filter-btn" onclick="toggleFilter()">Filter</button>
-</div>
-
-<div class="cards">
-    {% for event in events %}
-    <div class="card event-card"
-         data-category="{{ event.category }}"
-         data-date="{{ event.date }}"
-         data-time="{{ event.time }}">
-
-        <h3>{{ event.title }}</h3>
-        <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
-        <p>{{ event.venue }}</p>
-
+        <h2>🔥 Trending Now</h2>
+        <button class="filter-btn" onclick="toggleFilter()">Filter</button>
     </div>
-    {% endfor %}
-</div>
 
-
+    <div class="cards">
+        {% for event in events %}
+        <div class="card event-card"
+             data-category="{{ event.category }}"
+             data-date="{{ event.date }}"
+             data-time="{{ event.time }}">
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
+            <p>{{ event.venue }}</p>
+        </div>
+        {% endfor %}
+    </div>
 </section>
 
 <!-- CATEGORIES -->
@@ -63,14 +81,17 @@
     <h2>Explore by Category</h2>
     <div class="cards">
         {% for category, image in categories.items() %}
-        <div class="card category-card">
-            <img src="{{ url_for('static', filename='images/' + image) }}">
-            <h3>{{ category }}</h3>
-        </div>
+        <a href="{{ url_for('category_page', category_name=category) }}"
+   class="category-link"
+   onclick="savePreference('{{ category }}')">
+            <div class="card category-card">
+                <img src="{{ url_for('static', filename='images/' + image) }}">
+                <h3>{{ category }}</h3>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </section>
-
 
 <!-- FILTER SIDEBAR -->
 <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
@@ -83,6 +104,9 @@
         <option value="all">All</option>
         <option value="Cultural">Cultural</option>
         <option value="Technical">Technical</option>
+        <option value="Sports">Sports</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Value-Added Course">Value-Added Course</option>
     </select>
 
     <label>Date</label>
@@ -101,7 +125,6 @@
 
 <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
 
-
 <!-- CONTACT SECTION -->
 <section class="contact-section">
     <div class="contact-container">
@@ -116,6 +139,8 @@
     <span>Last Updated: February 2026</span>
     <span>© Vellore Institute of Technology | Privacy Policy</span>
 </footer>
+
+<!-- SEARCH SCRIPT -->
 <script>
 function searchEvents() {
     let input = document.getElementById("searchInput").value.toLowerCase();
@@ -133,7 +158,37 @@ function searchEvents() {
     });
 }
 </script>
+<script>
+function savePreference(category) {
+    localStorage.setItem("preferredCategory", category);
+}
+</script>
+<script>
+window.onload = function () {
+    let preferred = localStorage.getItem("preferredCategory");
+    if (!preferred) return;
 
+    let allCards = document.querySelectorAll(".event-card");
+    let container = document.getElementById("recommendedCards");
+    let section = document.getElementById("recommendedSection");
+
+    let count = 0;
+
+    allCards.forEach(card => {
+        let category = card.dataset.category;
+
+        if (category && category.includes(preferred.split(" ")[0]) && count < 3) {
+            let clone = card.cloneNode(true);
+            container.appendChild(clone);
+            count++;
+        }
+    });
+
+    if (count > 0) {
+        section.style.display = "block";
+    }
+};
+</script>
 
 </body>
 </html>
