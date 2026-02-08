@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CampusPulse Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: url("{{ url_for('static', filename='images/vit-bg.jpg') }}") no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dark overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
+        }
+
+        .login-box {
+    position: relative;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 55px 45px;
+    width: 420px;
+    border-radius: 18px;
+    text-align: center;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+    color: white;
+}
+
+
+        .login-box h2 {
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-box p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00c6ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #009ed8;
+        }
+
+        .error {
+            color: #ffb3b3;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>CampusPulse</h2>
+    <p>Login using your VIT email</p>
+
+    <input type="email" id="email" placeholder="Enter VIT Email">
+    <button onclick="login()">Login</button>
+
+    <p class="error" id="errorMsg"></p>
+</div>
+
+<script>
+function login() {
+    let email = document.getElementById("email").value.trim();
+    let error = document.getElementById("errorMsg");
+
+    error.textContent = "";
+
+    if (email.endsWith("@vitstudent.ac.in")) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userRole", "student");
+        window.location = "/home";
+
+    } 
+    else if (email.endsWith("@vit.ac.in")) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userRole", "employee");
+        window.location = "/home";
+
+    } 
+    else {
+        error.textContent = "Only VIT email IDs are allowed.";
+    }
+}
+</script>
+
+</body>
+</html>
