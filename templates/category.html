@@ -52,6 +52,9 @@
         <p><strong>Time:</strong> <span id="modalTime"></span></p>
         <p><strong>Venue:</strong> <span id="modalVenue"></span></p>
         <p id="modalDescription"></p>
+        <button class="register-btn" onclick="registerEvent()">Register</button>
+<p id="registerMsg" class="register-msg"></p>
+
     </div>
 </div>
 
@@ -72,6 +75,45 @@ function closeModal() {
     document.getElementById("eventModal").style.display = "none";
 }
 </script>
+<script>
+let currentEvent = {};
+
+function showEventDetails(title, category, date, time, venue, description, poster) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalCategory").textContent = category;
+    document.getElementById("modalDate").textContent = date;
+    document.getElementById("modalTime").textContent = time;
+    document.getElementById("modalVenue").textContent = venue;
+    document.getElementById("modalDescription").textContent = description;
+    document.getElementById("modalPoster").src = poster;
+
+    currentEvent = {
+        title, category, date, time, venue, description, poster
+    };
+
+    document.getElementById("registerMsg").textContent = "";
+    document.getElementById("eventModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("eventModal").style.display = "none";
+}
+
+function registerEvent() {
+    let registered = JSON.parse(localStorage.getItem("registeredEvents")) || [];
+
+    let exists = registered.find(e => e.title === currentEvent.title);
+
+    if (!exists) {
+        registered.push(currentEvent);
+        localStorage.setItem("registeredEvents", JSON.stringify(registered));
+        document.getElementById("registerMsg").textContent = "✅ Successfully registered!";
+    } else {
+        document.getElementById("registerMsg").textContent = "⚠ Already registered.";
+    }
+}
+</script>
+
 
 </body>
 </html>

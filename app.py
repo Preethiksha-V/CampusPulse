@@ -234,6 +234,9 @@ def edit_event(event_id):
     }
 
     return render_template("edit_event.html", event=event)
+@app.route('/my-events')
+def my_events():
+    return render_template("my_events.html")
 
 
 # Update event
