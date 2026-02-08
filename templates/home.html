@@ -27,11 +27,18 @@
 
 <!-- SEARCH SECTION -->
 <section class="search-section">
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search events, workshops, clubs...">
-        <button onclick="searchEvents()">Search</button>
-    </div>
+    <form action="/search" method="GET" class="search-container">
+        <input type="text" name="q" placeholder="Search events, workshops, clubs..." required>
+        <button type="submit">Search</button>
+    </form>
 </section>
+
+<!-- RECOMMENDED EVENTS -->
+<section class="recommended" id="recommendedSection" style="display:none;">
+    <h2>⭐ Recommended for You</h2>
+    <div class="cards" id="recommendedCards"></div>
+</section>
+
 <!-- UPCOMING EVENTS -->
 {% if upcoming|length > 0 %}
 <section class="upcoming">
@@ -49,11 +56,6 @@
     </div>
 </section>
 {% endif %}
-<!-- RECOMMENDED EVENTS -->
-<section class="recommended" id="recommendedSection" style="display:none;">
-    <h2>⭐ Recommended for You</h2>
-    <div class="cards" id="recommendedCards"></div>
-</section>
 
 <!-- TRENDING EVENTS -->
 <section class="featured">
@@ -67,7 +69,8 @@
         <div class="card event-card"
              data-category="{{ event.category }}"
              data-date="{{ event.date }}"
-             data-time="{{ event.time }}">
+             data-time="{{ event.time }}"
+             onclick="saveEventPreference('{{ event.category }}')">
             <h3>{{ event.title }}</h3>
             <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
             <p>{{ event.venue }}</p>
@@ -82,8 +85,8 @@
     <div class="cards">
         {% for category, image in categories.items() %}
         <a href="{{ url_for('category_page', category_name=category) }}"
-   class="category-link"
-   onclick="savePreference('{{ category }}')">
+           class="category-link"
+           onclick="savePreference('{{ category }}')">
             <div class="card category-card">
                 <img src="{{ url_for('static', filename='images/' + image) }}">
                 <h3>{{ category }}</h3>
@@ -140,29 +143,18 @@
     <span>© Vellore Institute of Technology | Privacy Policy</span>
 </footer>
 
-<!-- SEARCH SCRIPT -->
-<script>
-function searchEvents() {
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    let cards = document.querySelectorAll(".event-card");
-
-    cards.forEach(card => {
-        let title = card.querySelector("h3").textContent.toLowerCase();
-        let category = card.dataset.category.toLowerCase();
-
-        if (title.includes(input) || category.includes(input)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-}
-</script>
+<!-- SAVE PREFERENCES -->
 <script>
 function savePreference(category) {
     localStorage.setItem("preferredCategory", category);
 }
+
+function saveEventPreference(category) {
+    localStorage.setItem("preferredCategory", category);
+}
 </script>
+
+<!-- RECOMMENDATION LOGIC -->
 <script>
 window.onload = function () {
     let preferred = localStorage.getItem("preferredCategory");

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <h1>Search Results</h1>
+    </div>
+</header>
+
+<section class="featured">
+    <h2>Results for "{{ query }}"</h2>
+
+    <div class="cards">
+        {% for event in events %}
+        <div class="card event-card"
+             onclick="showEventDetails(
+                '{{ event.title }}',
+                '{{ event.category }}',
+                '{{ event.date }}',
+                '{{ event.time }}',
+                '{{ event.venue }}',
+                '{{ event.description }}',
+                '{{ url_for('static', filename='images/' + event.poster) }}'
+             )">
+
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.category }} | {{ event.date }} | {{ event.time }}</p>
+            <p>{{ event.venue }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if events|length == 0 %}
+        <p style="text-align:center;">No matching events found.</p>
+    {% endif %}
+</section>
+
+<!-- Reuse the same modal -->
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">×</span>
+
+        <img id="modalPoster" class="modal-poster">
+        <h2 id="modalTitle"></h2>
+        <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+        <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        <p><strong>Time:</strong> <span id="modalTime"></span></p>
+        <p><strong>Venue:</strong> <span id="modalVenue"></span></p>
+        <p id="modalDescription"></p>
+    </div>
+</div>
+
+<script>
+function showEventDetails(title, category, date, time, venue, description, poster) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalCategory").textContent = category;
+    document.getElementById("modalDate").textContent = date;
+    document.getElementById("modalTime").textContent = time;
+    document.getElementById("modalVenue").textContent = venue;
+    document.getElementById("modalDescription").textContent = description;
+    document.getElementById("modalPoster").src = poster;
+
+    document.getElementById("eventModal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("eventModal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
