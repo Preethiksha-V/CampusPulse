@@ -160,7 +160,8 @@ def search():
                 "description": row[6],
                 "poster": row[7]
             
-            })
+            }
+            )
 
     return render_template("search_results.html", events=results, query=query)
 
