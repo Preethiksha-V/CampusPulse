@@ -5,9 +5,6 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 
-# -------------------------------
-# Get all events
-# -------------------------------
 def get_events():
     conn = sqlite3.connect("campuspulse.db")
     cursor = conn.cursor()
@@ -162,6 +159,7 @@ def search():
                 "venue": row[5],
                 "description": row[6],
                 "poster": row[7]
+            
             })
 
     return render_template("search_results.html", events=results, query=query)
